@@ -100,6 +100,23 @@ To **start over**, pick a different starter image or switch `mode` to `start fro
 - While a chain is going, the node loads the newest image in `folder_path` (plus any subfolder in the prefix) whose name starts with `filename_prefix` **and** that was saved after the chain started. Older files and other workflows' outputs are ignored.
 - If no such image exists yet, it uses the starter and prints a warning in the ComfyUI console.
 
+## Edit chains from code (Comfy SDK)
+
+`client/edit_chain.py` does the same iterative editing from a script, using the [Comfy SDK](https://docs.comfy.org/development/api-development/sdks). It runs [`workflows/edit_chain_api.json`](workflows/edit_chain_api.json) (Flux.2 Klein 9B plus this node) once per prompt and feeds each result into the next edit. The chain is kept by the script, so it also works on hosted targets where each job runs on its own and saved files don't stick around.
+
+It works against your own ComfyUI, a Comfy API deployment or Comfy Cloud. To run it locally, keep ComfyUI running, then in another terminal:
+
+```bash
+pip install -r client/requirements.txt comfy-api-proxy
+comfy-api-proxy start                         # serves the SDK's API in front of ComfyUI on port 8189
+export COMFY_BASE_URL=http://127.0.0.1:8189   # PowerShell: $env:COMFY_BASE_URL = "http://127.0.0.1:8189"
+
+python client/edit_chain.py photo.png "make it nighttime" "add falling snow"
+python client/edit_chain.py photo.png         # no prompts: type edits one at a time
+```
+
+Results are saved to `edits/step_01.png`, `step_02.png`, and so on. Your ComfyUI needs the models the workflow uses: `flux-2-klein-9b-fp8.safetensors`, `qwen_3_8b_fp8mixed.safetensors` and `flux2-vae.safetensors`. To use a hosted target instead, set `COMFY_BASE_URL` to its URL and `COMFY_API_KEY` to your key.
+
 ## Troubleshooting
 
 - **It keeps editing the original image.** Your Save Image prefix doesn't match `filename_prefix`, or the files are going to a different folder. Check the console for a `[LatestImageLoader] No new image matching prefix …` warning, and compare `source_path` with where your images are actually saved.
