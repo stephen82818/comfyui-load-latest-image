@@ -59,7 +59,7 @@ ComfyUI/custom_nodes/comfyui-load-latest-image/
 Build a workflow shaped like this:
 
 ```
-Load Latest Image  ──image──▶  your edit model (Qwen Image Edit, Flux Kontext, …)  ──▶  Save Image
+Load Latest Image  ──image──▶  your edit model (Qwen Image Edit, Flux Kontext, Flux 2, …)  ──▶  Save Image
 ```
 
 1. In **Load Latest Image**, pick or upload your starter image.
