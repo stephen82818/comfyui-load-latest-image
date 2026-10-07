@@ -4,6 +4,10 @@ A ComfyUI custom node for **iterative image editing**, like asking a chat assist
 
 The first run loads a starter image you pick. Every run after that loads the **newest image your workflow saved**, so each edit builds on the last one. Queue, tweak the prompt, queue again.
 
+![Demo: five chained edits in ComfyUI with Load Latest Image](docs/demo.gif)
+
+*Five chained edits with Flux.2 Klein 9B. After each run, the node's preview updates to the newest edit, ready for the next prompt.*
+
 ## Features
 
 - **Edit chains.** Starts from your chosen image, then keeps loading the latest saved edit.
